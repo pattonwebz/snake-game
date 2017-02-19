@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch'
 ])
-.config(function ($routeProvider) {
+.config(function ($routeProvider, $locationProvider) {
+	$locationProvider.hashPrefix('');
     $routeProvider
     .when('/', {
         templateUrl: 'views/main.html',
@@ -29,6 +30,11 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
     })
+	.when('/contact', {
+		templateUrl: 'views/contact.html',
+		controller: 'ContactCtrl',
+		controllerAs: 'contact'
+	})
     .otherwise({
         redirectTo: '/'
 	});
@@ -40,7 +46,8 @@ function hashchanged(){
 	if('' !== hash){
 		$('ul.nav.navbar-nav li').each( function () {
 			var link = $('a', this).attr('href');
-			link = link.substring(1, link.length);
+			// don't need to strip first slash anymore
+			//link = link.substring(1, link.length);
 			if( hash === link && false === $( this ).hasClass( 'active' ) ){
 				$( this ).addClass( 'active' );
 			} else {
