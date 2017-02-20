@@ -8,13 +8,12 @@
  * Controller of the towerGameApp
  */
 angular.module('towerGameApp')
-	.controller('BoardCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
+	.controller('BoardCtrl', ['$scope', 'BoardFactory', function ($scope, BoardFactory) {
 		$scope.board = BoardFactory.getBoard();
 		$scope.handleClick = function ($event) {
 			var x = $event.target.dataset.posx;
  			var y = $event.target.dataset.posy;
 			console.log(($event));
- 			var state = getCurrentCellState($event);
 			function getCurrentCellState(){
  				var currentState = $event.target.dataset.state;
 				// default is to pass back current state in case of failure
@@ -27,13 +26,15 @@ angular.module('towerGameApp')
  				}
 				//console.log(newState);
  			  	return newState;
- 		   	};
+ 		   	}
+ 			var state = getCurrentCellState($event);
+
 			state = 'toggle';
  		   BoardFactory.setCell(x,y,state);
-		}
+	   };
 
 	}])
-	.factory('BoardFactory', ['$window', function($window) {
+	.factory('BoardFactory', function() {
 		var boardInitialized = false;
 		var service = {};
 		var _cells = {};
@@ -55,7 +56,7 @@ angular.module('towerGameApp')
 			console.log(cell);
 			_cells[cellKey] = cell;
 			//console.log(_cells);
-		};
+		}
 
 		service.setCell = function (setX, setY, setState) {
 			if('toggle' === setState ){
@@ -73,7 +74,7 @@ angular.module('towerGameApp')
 		};
 		function buildBoard() {
 			if(boardInitialized){
-				console.log('board already initialized, resetting...')
+				console.log('board already initialized, resetting...');
 			}
 			console.log('buildBoard');
 			//console.log(boardSize.x);
@@ -88,7 +89,7 @@ angular.module('towerGameApp')
 			}
 			boardInitialized = true;
 
-		};
+		}
 		service.buildBoard = function() {
 			buildBoard();
 		};
@@ -104,8 +105,8 @@ angular.module('towerGameApp')
 			if(40 === tempDirection){
 				service.setCell(currentPos.x + 1, currentPos.y, 'toggle' );
 			}
-		}
+		};
 
 		return service;
 
-	}]);
+	});
