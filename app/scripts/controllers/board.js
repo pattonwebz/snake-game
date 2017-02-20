@@ -19,9 +19,9 @@ angular.module('towerGameApp')
 				// default is to pass back current state in case of failure
 				var newState = currentState;
 				//console.log(currentState);
- 				if ("false" === currentState){
+ 				if ('false' === currentState){
  				   newState = true;
-			   	} else if ("true" === currentState) {
+			   	} else if ('true' === currentState) {
  				   newState = false;
  				}
 				//console.log(newState);
