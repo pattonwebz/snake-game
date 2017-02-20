@@ -81,3 +81,18 @@ body {
     border-bottom: 0;
   }
 }
+
+.board-cell {
+    width: 29px;
+    height: 29px;
+    display: inline;
+    background-color: white;
+    border:1px solid;
+    float: left;
+}
+.board-cell[data-state="false"] {
+    background-color: grey;
+}
+.board-cell[data-state="true"] {
+    background-color: red;
+}
