@@ -8,7 +8,7 @@
  * Controller of the towerGameApp
  */
 angular.module('towerGameApp')
-	.controller('BoardCtrl', ['$scope', 'BoardFactory', function ($scope, BoardFactory) {
+	.controller('BoardCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
 		$scope.board = BoardFactory.getBoard();
 		$scope.handleClick = function ($event) {
 			var x = $event.target.dataset.posx;
@@ -28,11 +28,13 @@ angular.module('towerGameApp')
 				//console.log(newState);
  			  	return newState;
  		   	};
- 		   BoardFactory.setCell(x,y,state)
+			state = 'toggle';
+ 		   BoardFactory.setCell(x,y,state);
 		}
 
 	}])
 	.factory('BoardFactory', ['$window', function($window) {
+		var boardInitialized = false;
 		var service = {};
 		var _cells = {};
 
@@ -46,54 +48,63 @@ angular.module('towerGameApp')
 
 			var cellKey = setX + '-' + setY;
 			var cell = {
-				'x': setX,
-				'y': setY,
-				'state': setState
-
+				x: setX,
+				y: setY,
+				state: setState
 			};
-			//console.log(cell);
+			console.log(cell);
 			_cells[cellKey] = cell;
 			//console.log(_cells);
-		}
+		};
+
 		service.setCell = function (setX, setY, setState) {
+			if('toggle' === setState ){
+				var currentCell = service.getCell(setX, setY);
+				//console.log(currentState);
+				if (false === currentCell.state){
+ 				   setState = true;
+			   } else if (true === currentCell.state) {
+ 				   setState = false;
+ 				}
+				//console.log(service.getCell(setX, setY));
+			}
+			console.log(setState);
 			setCell(setX, setY, setState);
 		};
-		function buildBoard(BoardFactory) {
+		function buildBoard() {
+			if(boardInitialized){
+				console.log('board already initialized, resetting...')
+			}
 			console.log('buildBoard');
-			console.log(boardSize.x);
+			//console.log(boardSize.x);
 			for ( var i=0; i<boardSize.x; i++ ){
 				// x = row
-				console.log('for x');
+				//console.log('for x');
 				for ( var j=0; j<boardSize.y; j++ ){
 					// y = col
-					console.log('for y');
+					//console.log('for y');
 					service.setCell(i,j,false);
 				}
 			}
-		};
-		service.handleThisElement = function ($event) {
-		   var x = $($event).data('posx');
-		   var y = $($event).data('posy');
-		   var state = function(){
-			   var currentState = $($event).data('state');
-			   if (false === currentState){
-				   newState = true;
-			   } else if (true === currentState) {
-				   newState = false;
-			   }
-			   return newState;
-		   };
-		   service.setCell(x,y,state)
-	   	};
-		service.getBoard = function() {
+			boardInitialized = true;
 
+		};
+		service.buildBoard = function() {
+			buildBoard();
+		};
+		service.getBoard = function() {
 			buildBoard();
 			return _cells;
 		};
 		service.getCell = function (x, y) {
-			return _cells.state;
+			var id = x + '-' + y;
+			return _cells[id];
 		};
-
+		service.move = function (tempDirection, currentPos) {
+			if(40 === tempDirection){
+				service.setCell(currentPos.x + 1, currentPos.y, 'toggle' );
+			}
+		}
 
 		return service;
 
