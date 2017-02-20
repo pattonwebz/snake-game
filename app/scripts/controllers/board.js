@@ -10,6 +10,27 @@
 angular.module('towerGameApp')
 	.controller('BoardCtrl', ['$scope', 'BoardFactory', function ($scope, BoardFactory) {
 		$scope.board = BoardFactory.getBoard();
+		$scope.handleClick = function ($event) {
+			var x = $event.target.dataset.posx;
+ 			var y = $event.target.dataset.posy;
+			console.log(($event));
+ 			var state = getCurrentCellState($event);
+			function getCurrentCellState(){
+ 				var currentState = $event.target.dataset.state;
+				// default is to pass back current state in case of failure
+				var newState = currentState;
+				//console.log(currentState);
+ 				if ("false" === currentState){
+ 				   newState = true;
+			   	} else if ("true" === currentState) {
+ 				   newState = false;
+ 				}
+				//console.log(newState);
+ 			  	return newState;
+ 		   	};
+ 		   BoardFactory.setCell(x,y,state)
+		}
+
 	}])
 	.factory('BoardFactory', ['$window', function($window) {
 		var service = {};
@@ -21,7 +42,7 @@ angular.module('towerGameApp')
 		};
 
 		function setCell(setX, setY, setState){
-			console.log('setCell');
+			//console.log('setCell');
 
 			var cellKey = setX + '-' + setY;
 			var cell = {
@@ -30,7 +51,7 @@ angular.module('towerGameApp')
 				'state': setState
 
 			};
-			console.log(cell);
+			//console.log(cell);
 			_cells[cellKey] = cell;
 			//console.log(_cells);
 		}
@@ -50,6 +71,20 @@ angular.module('towerGameApp')
 				}
 			}
 		};
+		service.handleThisElement = function ($event) {
+		   var x = $($event).data('posx');
+		   var y = $($event).data('posy');
+		   var state = function(){
+			   var currentState = $($event).data('state');
+			   if (false === currentState){
+				   newState = true;
+			   } else if (true === currentState) {
+				   newState = false;
+			   }
+			   return newState;
+		   };
+		   service.setCell(x,y,state)
+	   	};
 		service.getBoard = function() {
 
 			buildBoard();

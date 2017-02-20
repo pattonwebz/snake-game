@@ -1,17 +1,16 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
+<div ng-controller="GameCtrl" class="jumbotron">
   <p class="lead">
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
     Always a pleasure scaffolding your apps.
   </p>
-  <div ng-controller="BoardCtrl">
-	  <pre>{{ board }}</pre>
+  <div ng-controller="BoardCtrl" id="wrap">
 	  <div id="board">
-		  <div ng-repeat="cell in board" class="board-cell" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
+		  <div ng-repeat="cell in board" ng-click="handleClick($event)" class="board-cell" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
 		  </div>
+		  <div class="clearfix"></div>
 	  </div>
   </div>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+  <p><a class="btn btn-lg btn-success" ng-click="startGame()">Start! <span class="glyphicon glyphicon-ok"></span></a></p>
   <div ng-controller="PlayerCtrl">
 	  <p>{{ message }}</p>
   </div>
