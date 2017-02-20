@@ -1,11 +1,11 @@
-<div ng-controller="GameCtrl" class="jumbotron">
+<div ng-controller="MainCtrl" class="jumbotron" >
   <p class="lead">
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
     Always a pleasure scaffolding your apps.
   </p>
   <div ng-controller="BoardCtrl" id="wrap">
 	  <div id="board">
-		  <div ng-repeat="cell in board" ng-click="handleClick($event)" class="board-cell" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
+		  <div ng-repeat="cell in board" ng-click="handleClick($event)" class="board-cell" id="cell_{{ cell.x }}-{{ cell.y }}" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
 		  </div>
 		  <div class="clearfix"></div>
 	  </div>
