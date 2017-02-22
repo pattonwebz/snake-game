@@ -5,7 +5,7 @@
   </p>
   <div ng-controller="BoardCtrl" id="wrap">
 	  <div id="board">
-		  <div ng-repeat="cell in board" ng-click="handleClick($event)" class="board-cell" id="cell_{{ cell.x }}-{{ cell.y }}" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
+		  <div ng-repeat="cell in board track by $index" ng-click="handleClick($event)" class="board-cell" id="cell_{{ cell.x }}-{{ cell.y }}" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
 		  </div>
 		  <div class="clearfix"></div>
 	  </div>
