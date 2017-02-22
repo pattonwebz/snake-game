@@ -1,8 +1,8 @@
 <div ng-controller="MainCtrl" class="jumbotron" >
-  <p class="lead">
+  <!-- p class="lead">
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
     Always a pleasure scaffolding your apps.
-  </p>
+</p -->
   <div ng-controller="BoardCtrl" id="wrap">
 	  <div id="board">
 		  <div ng-repeat="cell in board track by $index" ng-click="handleClick($event)" class="board-cell" id="cell_{{ cell.x }}-{{ cell.y }}" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
@@ -11,22 +11,4 @@
 	  </div>
   </div>
   <p><a class="btn btn-lg btn-success" ng-click="startGame()">Start! <span class="glyphicon glyphicon-ok"></span></a></p>
-  <div ng-controller="PlayerCtrl">
-	  <p>{{ message }}</p>
-  </div>
-</div>
-
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
-
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
 </div>
