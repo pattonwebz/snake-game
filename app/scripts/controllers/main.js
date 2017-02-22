@@ -9,11 +9,7 @@
  */
 angular.module('towerGameApp')
 	.controller('MainCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
-		this.awesomeThings = [
-			'HTML5 Boilerplate',
-			'AngularJS',
-			'Karma'
-		];
+
 		function startTheGame(){
 			console.log('Starting Game!');
 			BoardFactory.buildBoard();
@@ -46,7 +42,7 @@ angular.module('towerGameApp')
 				  };
 		        tempDirection = DIRECTIONS.LEFT;
 				BoardFactory.move(tempDirection, currentPos);
-				//PlayerFactory.setPos(nextPos);
+				PlayerFactory.setPlayerMoved(true);
 			  } else if (e.keyCode === DIRECTIONS.UP ) {
 				  nextPos = {
 					  x: currentPos.x - 1,
@@ -54,7 +50,7 @@ angular.module('towerGameApp')
 				  };
 		        tempDirection = DIRECTIONS.UP;
 				BoardFactory.move(tempDirection, currentPos);
-				//PlayerFactory.setPos(nextPos);
+				PlayerFactory.setPlayerMoved(true);
 			  } else if (e.keyCode === DIRECTIONS.RIGHT ) {
 				  nextPos = {
 					  x: currentPos.x,
@@ -62,7 +58,7 @@ angular.module('towerGameApp')
 				  };
 		        tempDirection = DIRECTIONS.RIGHT;
 				BoardFactory.move(tempDirection, currentPos);
-				//PlayerFactory.setPos(nextPos);
+				PlayerFactory.setPlayerMoved(true);
 			  } else if (e.keyCode === DIRECTIONS.DOWN ) {
 				  nextPos = {
 					  x: currentPos.x + 1,
@@ -70,21 +66,27 @@ angular.module('towerGameApp')
 				  };
 				tempDirection = DIRECTIONS.DOWN;
 		        BoardFactory.move(tempDirection, currentPos);
-				//PlayerFactory.setPos(nextPos);
+				PlayerFactory.setPlayerMoved(true);
 		      }
 		    });
 		}
 
 		$scope.startGame = function(){
 			startTheGame();
+			var moved = false;
 			var i = 0;
 			setInterval(function () {
-				$scope.$apply();
-				if(10 === i){
-					BoardFactory.moveForward();
-					i = 0;
+				if(false === moved){
+					moved = PlayerFactory.hasPlayerMoved();
+				} else {
+					$scope.$apply();
+					if(10 === i){
+						BoardFactory.moveForward();
+						i = 0;
+					}
+					i++;
 				}
-				i++;
+
 			}, 10);
 		};
 

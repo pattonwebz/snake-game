@@ -9,43 +9,32 @@
  */
 angular.module('towerGameApp')
 	.controller('PlayerCtrl', ['$scope', 'PlayerFactory', function ($scope, PlayerFactory) {
-    	this.awesomeThings = [
-    		'HTML5 Boilerplate',
-    		'AngularJS',
-    		'Karma'
-    	];
-		$scope.message = PlayerFactory.getName();
+
+		$scope.pos = PlayerFactory.getPos();
+
 	}])
 	.factory('PlayerFactory', function() {
 
 		var service = {};
-		var _name = 'Player';
-		var _score = '0';
 		var _pos = {
 			x: 0,
 			y: 0
 		};
+		// set inital moved state to false
+		var _moved = false;
 
-		service.setName = function (name) {
-			_name = name;
-		};
-		service.getName = function () {
-			return _name;
-		};
-
-		service.setScore = function (score) {
-	  		_score = score;
-		};
-		service.getScore = function () {
-	  		return _score;
-		};
 		service.setPos = function (pos) {
 			_pos = pos;
 		};
 		service.getPos = function () {
 			return _pos;
 		};
-
+		service.setPlayerMoved = function(moved) {
+			_moved = moved;
+		}
+		service.hasPlayerMoved = function() {
+			return _moved;
+		}
 		return service;
 
 	});
