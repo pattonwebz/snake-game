@@ -38,6 +38,8 @@ angular.module('towerGameApp')
 		var boardInitialized = false;
 		var service = {};
 		var _cells = {};
+		var _currentPos = {};
+		var _forwardPos = {};
 
 		var boardSize = {
 			x: 20,
@@ -61,12 +63,20 @@ angular.module('towerGameApp')
 		service.setCell = function (setX, setY, setState) {
 			if('toggle' === setState ){
 				var currentCell = service.getCell(setX, setY);
+
 				//console.log(currentState);
 				if (false === currentCell.state){
  				   setState = true;
 			   } else if (true === currentCell.state) {
  				   setState = false;
  				}
+				var cellKey = setX + '-' + setY;
+				var cell = {
+					x: setX,
+					y: setY,
+					state: setState
+				};
+				_cells[cellKey] = cell;
 				//console.log(service.getCell(setX, setY));
 			}
 			console.log(setState);
@@ -99,12 +109,46 @@ angular.module('towerGameApp')
 		};
 		service.getCell = function (x, y) {
 			var id = x + '-' + y;
+			console.log('getCell');
+			console.log(id);
+			console.log(_cells[id]);
+			console.log(_cells);
 			return _cells[id];
 		};
+		service.moveForward = function () {
+			service.setCell(_forwardPos.x,_forwardPos.y, 'toggle');
+			service.setCell(_currentPos.x,_currentPos.y, 'toggle');
+			_currentPos.x = _forwardPos.x;
+			_currentPos.y = _forwardPos.y;
+		};
 		service.move = function (tempDirection, currentPos) {
+			var x = currentPos.x;
+			var y = currentPos.y;
 			if(40 === tempDirection){
-				service.setCell(currentPos.x + 1, currentPos.y, 'toggle' );
+				x = currentPos.x + 1;
+				y = currentPos.y;
+			} else if (39 === tempDirection ){
+				y = currentPos.y + 1;
+				x = currentPos.x;
+			} else if (38 === tempDirection ){
+				x = currentPos.x - 1;
+				y = currentPos.y;
+			} else if (37 === tempDirection ){
+				y = currentPos.y - 1;
+				x = currentPos.x;
 			}
+			_currentPos = currentPos;
+			_forwardPos = {
+				'x': x,
+				'y': y
+			};
+		};
+
+		service.getCells = function () {
+			return _cells;
+		};
+		service.getCells = function (cells) {
+			_cells = cells;
 		};
 
 		return service;

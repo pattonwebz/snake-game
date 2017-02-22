@@ -30,39 +30,62 @@ angular.module('towerGameApp')
 			  DOWN: 40
 			};
 
-			/*window.addEventListener("keydown", function(e) {
-		      if (e.keyCode == DIRECTIONS.LEFT && snake.direction !== DIRECTIONS.RIGHT) {
-		        tempDirection = DIRECTIONS.LEFT;
-		      } else if (e.keyCode == DIRECTIONS.UP && snake.direction !== DIRECTIONS.DOWN) {
-		        tempDirection = DIRECTIONS.UP;
-		      } else if (e.keyCode == DIRECTIONS.RIGHT && snake.direction !== DIRECTIONS.LEFT) {
-		        tempDirection = DIRECTIONS.RIGHT;
-		      } else if (e.keyCode == DIRECTIONS.DOWN && snake.direction !== DIRECTIONS.UP) {
-		        tempDirection = DIRECTIONS.DOWN;
-		      }
-			});*/
-
 			var tempDirection = '';
 			window.addEventListener('keydown', function(e) {
 			  e.preventDefault();
 			  console.log(e.keyCode);
+			  var currentPos = PlayerFactory.getPos();
+			  var nextPos = {
+				  x: currentPos.x,
+				  y: currentPos.y
+			  };
 		      if (e.keyCode === DIRECTIONS.LEFT ) {
+				  nextPos = {
+					  x: currentPos.x,
+					  y: currentPos.y - 1
+				  };
 		        tempDirection = DIRECTIONS.LEFT;
+				BoardFactory.move(tempDirection, currentPos);
+				//PlayerFactory.setPos(nextPos);
 			  } else if (e.keyCode === DIRECTIONS.UP ) {
+				  nextPos = {
+					  x: currentPos.x - 1,
+					  y: currentPos.y
+				  };
 		        tempDirection = DIRECTIONS.UP;
+				BoardFactory.move(tempDirection, currentPos);
+				//PlayerFactory.setPos(nextPos);
 			  } else if (e.keyCode === DIRECTIONS.RIGHT ) {
+				  nextPos = {
+					  x: currentPos.x,
+					  y: currentPos.y + 1
+				  };
 		        tempDirection = DIRECTIONS.RIGHT;
+				BoardFactory.move(tempDirection, currentPos);
+				//PlayerFactory.setPos(nextPos);
 			  } else if (e.keyCode === DIRECTIONS.DOWN ) {
+				  nextPos = {
+					  x: currentPos.x + 1,
+					  y: currentPos.y
+				  };
 				tempDirection = DIRECTIONS.DOWN;
-				var currentPos = PlayerFactory.getPos();
 		        BoardFactory.move(tempDirection, currentPos);
-				PlayerFactory.setPos(currentPos.x+1, currentPos.y);
+				//PlayerFactory.setPos(nextPos);
 		      }
 		    });
 		}
 
 		$scope.startGame = function(){
 			startTheGame();
+			var i = 0;
+			setInterval(function () {
+				$scope.$apply();
+				if(10 === i){
+					BoardFactory.moveForward();
+					i = 0;
+				}
+				i++;
+			}, 10);
 		};
 
 
