@@ -66,3 +66,13 @@ $( document ).ready( function() {
 	    hashchanged();
 	}).trigger('hashchange');
 });
+function coord(){
+	this.x = false,
+	this.y = false
+}
+function board_cell(){
+	this.position = new coord();
+}
+board_cell.prototype.state = function(){
+	this.currentstate = false;
+}
