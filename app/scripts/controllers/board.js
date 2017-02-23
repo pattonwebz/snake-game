@@ -55,7 +55,7 @@ angular.module('towerGameApp')
 				y: setY,
 				state: setState
 			};
-			console.log(cell);
+			//console.log(cell);
 			_cells[cellKey] = cell;
 			//console.log(_cells);
 		}
@@ -77,9 +77,10 @@ angular.module('towerGameApp')
 					state: setState
 				};
 				_cells[cellKey] = cell;
-				//console.log(service.getCell(setX, setY));
+				//console.log('setcell');
+				//console.log(_cells[cellKey]);
 			}
-			console.log(setState);
+			//console.log(setState);
 			setCell(setX, setY, setState);
 		};
 		function buildBoard() {
@@ -109,10 +110,10 @@ angular.module('towerGameApp')
 		};
 		service.getCell = function (x, y) {
 			var id = x + '-' + y;
-			console.log('getCell');
-			console.log(id);
-			console.log(_cells[id]);
-			console.log(_cells);
+			//console.log('getCell');
+			//console.log(id);
+			//console.log(_cells[id]);
+			//console.log(_cells);
 			return _cells[id];
 		};
 		service.moveForward = function () {
