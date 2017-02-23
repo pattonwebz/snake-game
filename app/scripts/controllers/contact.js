@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name towerGameApp.controller:ContactCtrl
+ * @name snakeGameApp.controller:ContactCtrl
  * @description
  * # ContactCtrl
- * Controller of the towerGameApp
+ * Controller of the snakeGameApp
  */
-angular.module('towerGameApp')
+angular.module('snakeGameApp')
   .controller('ContactCtrl', function () {
     this.awesomeThings = [
       'HTML5 Boilerplate',

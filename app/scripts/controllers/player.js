@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name towerGameApp.controller:PlayerCtrl
+ * @name snakeGameApp.controller:PlayerCtrl
  * @description
  * # PlayerCtrl
- * Controller of the towerGameApp
+ * Controller of the snakeGameApp
  */
-angular.module('towerGameApp')
+angular.module('snakeGameApp')
 	.controller('PlayerCtrl', ['$scope', 'PlayerFactory', function ($scope, PlayerFactory) {
 
 		$scope.pos = PlayerFactory.getPos();
@@ -48,7 +48,7 @@ angular.module('towerGameApp')
 			return _score;
 		}
 		service.addSegment = function() {
-			
+
 		}
 		// returns the factory publicly available data
 		return service;

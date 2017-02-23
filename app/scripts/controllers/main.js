@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name towerGameApp.controller:MainCtrl
+ * @name snakeGameApp.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the towerGameApp
+ * Controller of the snakeGameApp
  */
-angular.module('towerGameApp')
+angular.module('snakeGameApp')
 	.controller('MainCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
 
 	$scope.gameScore = function(){

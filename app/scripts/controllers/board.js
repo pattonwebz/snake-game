@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name towerGameApp.controller:BoardCtrl
+ * @name snakeGameApp.controller:BoardCtrl
  * @description
  * # BoardCtrl
- * Controller of the towerGameApp
+ * Controller of the snakeGameApp
  */
-angular.module('towerGameApp')
+angular.module('snakeGameApp')
 	.controller('BoardCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
 		// get the current board - if one doesn't exist then an empty one will be made
 		$scope.board = BoardFactory.getBoard();

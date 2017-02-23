@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name towerGameApp
+ * @name snakeGameApp
  * @description
- * # towerGameApp
+ * # snakeGameApp
  *
  * Main module of the application.
  */
 angular
-  .module('towerGameApp', [
+  .module('snakeGameApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
