@@ -68,6 +68,7 @@ angular.module('snakeGameApp')
 		}
 
 		$scope.startGame = function(){
+			var t;
 			tempDirection = '';
 			PlayerFactory.setScore(0);
 			// run the start game function to reset board and start listener
@@ -80,7 +81,7 @@ angular.module('snakeGameApp')
 			var i = 0;
 			// start our frames loop as an interval
 			clearInterval(t);
-			var t = setInterval(function () {
+			t = setInterval(function () {
 				// check if player has moved yet
 				if (false === fruitOnBoard){
 					//$scope.addFruit();
@@ -122,7 +123,7 @@ angular.module('snakeGameApp')
 							BoardFactory.addToScore(-Math.abs(scoreFromBoard));
 						}
 						PlayerFactory.setScore(PlayerFactory.getScore() + 1 + scoreFromBoard);
-						BoardFactory.move(tempDirection, playerPos)
+						BoardFactory.move(tempDirection, playerPos);
 						// make the move
 						BoardFactory.moveForward();
 						// reset loop counter
@@ -141,7 +142,7 @@ angular.module('snakeGameApp')
 		// add a fruit to the board
 		$scope.addFruit = function() {
  		   // get board size
- 		   var boardSize = BoardFactory.getBoardSize();Math.floor(Math.random() * (20))
+ 		   var boardSize = BoardFactory.getBoardSize();Math.floor(Math.random() * (20));
  		   var randomX = Math.floor(Math.random() * (boardSize.x));
  		   var randomY = Math.floor(Math.random() * (boardSize.y));
  		   console.log('x: ' + randomX + ', y: ' + randomY);
@@ -149,6 +150,7 @@ angular.module('snakeGameApp')
  	   };
 
 	   $scope.gameOver = function() {
+		   var alert;
 		   alert('gameOver');
 	   };
 

@@ -8,7 +8,7 @@
  * Controller of the snakeGameApp
  */
 angular.module('snakeGameApp')
-	.controller('BoardCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
+	.controller('BoardCtrl', ['$scope', 'BoardFactory', function ($scope, BoardFactory) {
 		// get the current board - if one doesn't exist then an empty one will be made
 		$scope.board = BoardFactory.getBoard();
 		// click handle function for board cells - not really in use
@@ -221,10 +221,10 @@ angular.module('snakeGameApp')
 
 		service.addFruitLocation = function (x, y) {
 			_fruitPos = {
-				"x": x,
-				"y": y
-			}
-			service.setCell(x,y, 'fruit')
+				'x': x,
+				'y': y
+			};
+			service.setCell(x,y, 'fruit');
 			_fruitOnBoard = true;
 		};
 
@@ -236,11 +236,11 @@ angular.module('snakeGameApp')
 			_fruitPos = {
 				x: 0,
 				y: 0
-			}
+			};
 			_fruitOnBoard = false;
 		};
 		service.addToScore = function(addToScore) {
-			_addToScore = _addToScore + addToScore
+			_addToScore = _addToScore + addToScore;
 		};
 		service.toScore = function() {
 			return _addToScore;

@@ -37,19 +37,19 @@ angular.module('snakeGameApp')
 		};
 		service.setPlayerMoved = function(moved) {
 			_moved = moved;
-		}
+		};
 		service.hasPlayerMoved = function() {
 			return _moved;
-		}
+		};
 		service.setScore = function(score) {
 			_score = score;
-		}
+		};
 		service.getScore = function() {
 			return _score;
-		}
+		};
 		service.addSegment = function() {
 
-		}
+		};
 		// returns the factory publicly available data
 		return service;
 
