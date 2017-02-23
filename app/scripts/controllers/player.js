@@ -14,15 +14,19 @@ angular.module('towerGameApp')
 
 	}])
 	.factory('PlayerFactory', function() {
+		// holds some data about the player
 
 		var service = {};
+		// initial position is cell 0-0
 		var _pos = {
 			x: 0,
 			y: 0
 		};
-		// set inital moved state to false
+		// set inital moved state to false - game only starts after movement occurs
 		var _moved = false;
 
+		// publicly callable ways to set and get player positions and switches
+		// for the initial moved states
 		service.setPos = function (pos) {
 			_pos = pos;
 		};
@@ -35,6 +39,8 @@ angular.module('towerGameApp')
 		service.hasPlayerMoved = function() {
 			return _moved;
 		}
+
+		// returns the factory publicly available data
 		return service;
 
 	});

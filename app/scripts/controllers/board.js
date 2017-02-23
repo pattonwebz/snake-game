@@ -9,7 +9,9 @@
  */
 angular.module('towerGameApp')
 	.controller('BoardCtrl', ['$scope', 'BoardFactory', function ($scope, BoardFactory) {
+		// get the current board - if one doesn't exist then an empty one will be made
 		$scope.board = BoardFactory.getBoard();
+		// click handle function for board cells - not really in use
 		$scope.handleClick = function ($event) {
 			var x = $event.target.dataset.posx;
  			var y = $event.target.dataset.posy;
@@ -35,96 +37,134 @@ angular.module('towerGameApp')
 
 	}])
 	.factory('BoardFactory', function() {
+		// switch to say if board already exists or not
 		var boardInitialized = false;
+		// return variable to pass back object with data we want shared
 		var service = {};
+
+		// this is the cells object that holds all board cells
 		var _cells = {};
+
+		// holds the current position and forward postion of the active board
+		// cell. IE the player
 		var _currentPos = {};
 		var _forwardPos = {};
 
+		// sise of the board - x = rows, y = columns
 		var boardSize = {
 			x: 20,
 			y: 20
 		};
 
+		// private function to set cell states
 		function setCell(setX, setY, setState){
 			//console.log('setCell');
 
+			// build the key to indentify the cell we're updating
 			var cellKey = setX + '-' + setY;
+			// new cell values
 			var cell = {
 				x: setX,
 				y: setY,
 				state: setState
 			};
 			//console.log(cell);
+
+			// update the cell
 			_cells[cellKey] = cell;
 			//console.log(_cells);
 		}
 
+		// this is the publicly callable way to set cells
 		service.setCell = function (setX, setY, setState) {
+			// booleen toggle is easiest state to hanele
 			if('toggle' === setState ){
+				// since this is a toggle we need to know what the current
+				// value is, grab it
 				var currentCell = service.getCell(setX, setY);
 
 				//console.log(currentState);
+
+				// switch true/false states in the cell
 				if (false === currentCell.state){
  				   setState = true;
-			   } else if (true === currentCell.state) {
+			   	} else if (true === currentCell.state) {
  				   setState = false;
  				}
+				// build cell key
 				var cellKey = setX + '-' + setY;
+				// new cell data
 				var cell = {
 					x: setX,
 					y: setY,
 					state: setState
 				};
+				// udpdate the cell
 				_cells[cellKey] = cell;
 				//console.log('setcell');
 				//console.log(_cells[cellKey]);
 			}
-			//console.log(setState);
+			// since this isn't a pre-defined state update with custom state
 			setCell(setX, setY, setState);
 		};
 		function buildBoard() {
+			// if board is already built then log message to console
 			if(boardInitialized){
 				console.log('board already initialized, resetting...');
 			}
-			console.log('buildBoard');
-			//console.log(boardSize.x);
+			//console.log('buildBoard');
+
+			// loop loop through each x (row) and create a cell for each
+			// y (col) in it
 			for ( var i=0; i<boardSize.x; i++ ){
 				// x = row
 				//console.log('for x');
 				for ( var j=0; j<boardSize.y; j++ ){
 					// y = col
 					//console.log('for y');
+					// create a cell with current row,col,state
 					service.setCell(i,j,false);
 				}
 			}
 			boardInitialized = true;
 
 		}
+		// publically callable way to build a board
 		service.buildBoard = function() {
 			buildBoard();
 		};
+		// publically callable way to get the current board
 		service.getBoard = function() {
-			buildBoard();
+			// if board exists log a message else build one
+			if(boardInitialized){
+				console.log('board already initialized, returning...');
+			} else {
+				buildBoard();
+			}
+			// return the board cells
 			return _cells;
 		};
+		// publically callable way to get specific cell data
 		service.getCell = function (x, y) {
 			var id = x + '-' + y;
-			//console.log('getCell');
-			//console.log(id);
-			//console.log(_cells[id]);
-			//console.log(_cells);
 			return _cells[id];
 		};
 		service.moveForward = function () {
+			// NOTE: these variables are set in the other move function is this factory
+			// set the state of the next cell we're moving to
 			service.setCell(_forwardPos.x,_forwardPos.y, 'toggle');
+			// set the state of the last cell we moved from
 			service.setCell(_currentPos.x,_currentPos.y, 'toggle');
+			// update current position variables
 			_currentPos.x = _forwardPos.x;
 			_currentPos.y = _forwardPos.y;
 		};
 		service.move = function (tempDirection, currentPos) {
+			// set initial value to the same as current value - we return this if no move happens
 			var x = currentPos.x;
 			var y = currentPos.y;
+			// if the direction is one corresponding to an arrow key then set new
+			// x and y values for that direction
 			if(40 === tempDirection){
 				x = currentPos.x + 1;
 				y = currentPos.y;
@@ -138,6 +178,7 @@ angular.module('towerGameApp')
 				y = currentPos.y - 1;
 				x = currentPos.x;
 			}
+			// set the factory variables to match any updated values
 			_currentPos = currentPos;
 			_forwardPos = {
 				'x': x,
@@ -145,10 +186,12 @@ angular.module('towerGameApp')
 			};
 		};
 
+		// publically callable way to get all the cells - same as getting a board
 		service.getCells = function () {
 			return _cells;
 		};
-		service.getCells = function (cells) {
+		// publically callable way to set an entire board
+		service.setCells = function (cells) {
 			_cells = cells;
 		};
 
