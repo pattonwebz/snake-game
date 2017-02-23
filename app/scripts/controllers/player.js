@@ -25,6 +25,8 @@ angular.module('towerGameApp')
 		// set inital moved state to false - game only starts after movement occurs
 		var _moved = false;
 
+		var _score = 0;
+
 		// publicly callable ways to set and get player positions and switches
 		// for the initial moved states
 		service.setPos = function (pos) {
@@ -39,7 +41,15 @@ angular.module('towerGameApp')
 		service.hasPlayerMoved = function() {
 			return _moved;
 		}
-
+		service.setScore = function(score) {
+			_score = score;
+		}
+		service.getScore = function() {
+			return _score;
+		}
+		service.addSegment = function() {
+			
+		}
 		// returns the factory publicly available data
 		return service;
 

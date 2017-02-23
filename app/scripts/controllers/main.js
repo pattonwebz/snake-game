@@ -10,6 +10,10 @@
 angular.module('towerGameApp')
 	.controller('MainCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
 
+	$scope.gameScore = function(){
+		return PlayerFactory.getScore();
+	};
+
 	// this needs to be accessable to the whole program
 	var tempDirection = '';
 		function startTheGame(){
@@ -42,7 +46,7 @@ angular.module('towerGameApp')
 				e.preventDefault();
 
 				// log the keypress to console
-				//console.log(e.keyCode);
+				console.log(e.keyCode);
 
 				// check if the pressed key is an arrow key - if so then store
 				// the direction and set out player moved flag to true so the
@@ -64,14 +68,21 @@ angular.module('towerGameApp')
 		}
 
 		$scope.startGame = function(){
+			tempDirection = '';
+			PlayerFactory.setScore(0);
 			// run the start game function to reset board and start listener
 			startTheGame();
 			// set the inital moved state to false - game truly starts on first move
 			var moved = false;
+			// flag for when fruit is active in the board
+			var fruitOnBoard = false;
 			var i = 0;
 			// start our frames loop as an interval
-			setInterval(function () {
+			var t = setInterval(function () {
 				// check if player has moved yet
+				if (false === fruitOnBoard){
+					//$scope.addFruit();
+				}
 				if(false === moved){
 					// haven't moved already - check if moved this tick
 					moved = PlayerFactory.hasPlayerMoved();
@@ -81,17 +92,63 @@ angular.module('towerGameApp')
 					// every X amount of loops trigger a move
 					if(10 === i){
 						// set the next move location based on last known direction
-						BoardFactory.move(tempDirection, PlayerFactory.getPos())
+						var playerPos = PlayerFactory.getPos();
+						if ( tempDirection === 37 ) {
+							if((playerPos.y - 1) < 0){
+								clearInterval(t);
+								$scope.gameOver();
+							}
+						} else if ( tempDirection === 38 ) {
+							if((playerPos.x - 1) < 0){
+								clearInterval(t);
+								$scope.gameOver();
+							}
+						} else if ( tempDirection === 39 ) {
+							if((playerPos.y + 1) > 19){
+								clearInterval(t);
+								$scope.gameOver();
+							}
+
+						} else if ( tempDirection === 40 ) {
+							if((playerPos.x + 1) > 19){
+								clearInterval(t);
+								$scope.gameOver();
+							}
+						}
+						var scoreFromBoard = BoardFactory.toScore();
+						if (scoreFromBoard > 0){
+							BoardFactory.addToScore(-Math.abs(scoreFromBoard));
+						}
+						PlayerFactory.setScore(PlayerFactory.getScore() + 1 + scoreFromBoard);
+						BoardFactory.move(tempDirection, playerPos)
 						// make the move
 						BoardFactory.moveForward();
 						// reset loop counter
 						i = 0;
+						if( false === fruitOnBoard ){
+							$scope.addFruit();
+						}
+						// set fruitOnBoard for next itteration
+						fruitOnBoard = BoardFactory.isFruitOnBoard();
 					}
 					i++;
 				}
 
 			}, 10);
 		};
+		// add a fruit to the board
+		$scope.addFruit = function() {
+ 		   // get board size
+ 		   var boardSize = BoardFactory.getBoardSize();Math.floor(Math.random() * (20))
+ 		   var randomX = Math.floor(Math.random() * (boardSize.x));
+ 		   var randomY = Math.floor(Math.random() * (boardSize.y));
+ 		   console.log('x: ' + randomX + ', y: ' + randomY);
+		   BoardFactory.addFruitLocation(randomX, randomY);
+ 	   };
+
+	   $scope.gameOver = function() {
+		   alert('gameOver');
+	   };
 
 
 	}]);

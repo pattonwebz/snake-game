@@ -96,3 +96,6 @@ body {
 .board-cell[data-state="true"] {
     background-color: red;
 }
+.board-cell[data-state="fruit"] {
+    background-color: green;
+}

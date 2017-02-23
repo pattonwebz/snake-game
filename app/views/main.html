@@ -3,11 +3,16 @@
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
     Always a pleasure scaffolding your apps.
 </p -->
-  <div ng-controller="BoardCtrl" id="wrap">
-	  <div id="board">
-		  <div ng-repeat="cell in board track by $index" ng-click="handleClick($event)" class="board-cell" id="cell_{{ cell.x }}-{{ cell.y }}" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
-		  </div>
-		  <div class="clearfix"></div>
+	<div ng-controller="BoardCtrl" id="wrap">
+		<div id="board">
+			<div ng-repeat="cell in board track by $index" ng-click="handleClick($event)" class="board-cell" id="cell_{{ cell.x }}-{{ cell.y }}" data-posx="{{ cell.x }}" data-posy="{{ cell.y }}" data-state="{{ cell.state }}">
+			</div>
+			<div class="clearfix"></div>
+			<div class="row">
+				<div class="col-sm-6">
+				  	<p>Score: {{ gameScore() }}</p>
+				</div>
+			</div>
 	  </div>
   </div>
   <p style="margin-top:50px;"><a class="btn btn-lg btn-success" ng-click="startGame()">Start! <span class="glyphicon glyphicon-ok"></span></a></p>

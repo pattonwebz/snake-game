@@ -8,7 +8,7 @@
  * Controller of the towerGameApp
  */
 angular.module('towerGameApp')
-	.controller('BoardCtrl', ['$scope', 'BoardFactory', function ($scope, BoardFactory) {
+	.controller('BoardCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
 		// get the current board - if one doesn't exist then an empty one will be made
 		$scope.board = BoardFactory.getBoard();
 		// click handle function for board cells - not really in use
@@ -35,6 +35,7 @@ angular.module('towerGameApp')
  		   BoardFactory.setCell(x,y,state);
 	   };
 
+
 	}])
 	.factory('BoardFactory', function() {
 		// switch to say if board already exists or not
@@ -51,10 +52,21 @@ angular.module('towerGameApp')
 		var _forwardPos = {};
 
 		// sise of the board - x = rows, y = columns
-		var boardSize = {
+		var _boardSize = {
 			x: 20,
 			y: 20
 		};
+
+		// set starting postion of a fruit
+		var _fruitPos = {
+			x: 0,
+			y: 0
+		};
+
+		// flag to say if fruit is present on board
+		var _fruitOnBoard = false;
+
+		var _addToScore = 0;
 
 		// private function to set cell states
 		function setCell(setX, setY, setState){
@@ -77,7 +89,7 @@ angular.module('towerGameApp')
 
 		// this is the publicly callable way to set cells
 		service.setCell = function (setX, setY, setState) {
-			// booleen toggle is easiest state to hanele
+			// toggle is the most common change state to be used
 			if('toggle' === setState ){
 				// since this is a toggle we need to know what the current
 				// value is, grab it
@@ -86,11 +98,11 @@ angular.module('towerGameApp')
 				//console.log(currentState);
 
 				// switch true/false states in the cell
-				if (false === currentCell.state){
+				if (false === currentCell.state || 'fruit' === currentCell.state){
  				   setState = true;
-			   	} else if (true === currentCell.state) {
+			    } else if (true === currentCell.state ) {
  				   setState = false;
- 				}
+			   	}
 				// build cell key
 				var cellKey = setX + '-' + setY;
 				// new cell data
@@ -116,10 +128,10 @@ angular.module('towerGameApp')
 
 			// loop loop through each x (row) and create a cell for each
 			// y (col) in it
-			for ( var i=0; i<boardSize.x; i++ ){
+			for ( var i=0; i<_boardSize.x; i++ ){
 				// x = row
 				//console.log('for x');
-				for ( var j=0; j<boardSize.y; j++ ){
+				for ( var j=0; j<_boardSize.y; j++ ){
 					// y = col
 					//console.log('for y');
 					// create a cell with current row,col,state
@@ -150,14 +162,21 @@ angular.module('towerGameApp')
 			return _cells[id];
 		};
 		service.moveForward = function () {
-			// NOTE: these variables are set in the other move function is this factory
-			// set the state of the next cell we're moving to
-			service.setCell(_forwardPos.x,_forwardPos.y, 'toggle');
-			// set the state of the last cell we moved from
-			service.setCell(_currentPos.x,_currentPos.y, 'toggle');
-			// update current position variables
-			_currentPos.x = _forwardPos.x;
-			_currentPos.y = _forwardPos.y;
+			// get the next cell state so we can do things when it's a fruit
+			var _nextCell = service.getCell(_forwardPos.x, _forwardPos.y);
+			if('fruit' === _nextCell.state){
+				service.addToScore(100);
+				service.removeFruitFromBoard();
+			}
+				// NOTE: these variables are set in the other move function is this factory
+				// set the state of the next cell we're moving to
+				service.setCell(_forwardPos.x,_forwardPos.y, 'toggle');
+				// set the state of the last cell we moved from
+				service.setCell(_currentPos.x,_currentPos.y, 'toggle');
+				// update current position variables
+				_currentPos.x = _forwardPos.x;
+				_currentPos.y = _forwardPos.y;
+
 		};
 		service.move = function (tempDirection, currentPos) {
 			// set initial value to the same as current value - we return this if no move happens
@@ -193,6 +212,38 @@ angular.module('towerGameApp')
 		// publically callable way to set an entire board
 		service.setCells = function (cells) {
 			_cells = cells;
+		};
+
+		// publically callable way to get the board size
+		service.getBoardSize = function () {
+			return _boardSize;
+		};
+
+		service.addFruitLocation = function (x, y) {
+			_fruitPos = {
+				"x": x,
+				"y": y
+			}
+			service.setCell(x,y, 'fruit')
+			_fruitOnBoard = true;
+		};
+
+		service.isFruitOnBoard = function() {
+			return _fruitOnBoard;
+		};
+		service.removeFruitFromBoard = function() {
+			console.log('remove');
+			_fruitPos = {
+				x: 0,
+				y: 0
+			}
+			_fruitOnBoard = false;
+		};
+		service.addToScore = function(addToScore) {
+			_addToScore = _addToScore + addToScore
+		};
+		service.toScore = function() {
+			return _addToScore;
 		};
 
 		return service;
