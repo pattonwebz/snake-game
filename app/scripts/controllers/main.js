@@ -10,6 +10,7 @@
 angular.module('towerGameApp')
 	.controller('MainCtrl', ['$scope', 'BoardFactory', 'PlayerFactory', function ($scope, BoardFactory, PlayerFactory) {
 
+	var tempDirection = '';
 		function startTheGame(){
 			console.log('Starting Game!');
 			BoardFactory.buildBoard();
@@ -26,7 +27,6 @@ angular.module('towerGameApp')
 			  DOWN: 40
 			};
 
-			var tempDirection = '';
 			window.addEventListener('keydown', function(e) {
 			  e.preventDefault();
 			  console.log(e.keyCode);
@@ -36,36 +36,16 @@ angular.module('towerGameApp')
 				  y: currentPos.y
 			  };
 		      if (e.keyCode === DIRECTIONS.LEFT ) {
-				  nextPos = {
-					  x: currentPos.x,
-					  y: currentPos.y - 1
-				  };
 		        tempDirection = DIRECTIONS.LEFT;
-				BoardFactory.move(tempDirection, currentPos);
 				PlayerFactory.setPlayerMoved(true);
 			  } else if (e.keyCode === DIRECTIONS.UP ) {
-				  nextPos = {
-					  x: currentPos.x - 1,
-					  y: currentPos.y
-				  };
 		        tempDirection = DIRECTIONS.UP;
-				BoardFactory.move(tempDirection, currentPos);
 				PlayerFactory.setPlayerMoved(true);
 			  } else if (e.keyCode === DIRECTIONS.RIGHT ) {
-				  nextPos = {
-					  x: currentPos.x,
-					  y: currentPos.y + 1
-				  };
 		        tempDirection = DIRECTIONS.RIGHT;
-				BoardFactory.move(tempDirection, currentPos);
 				PlayerFactory.setPlayerMoved(true);
 			  } else if (e.keyCode === DIRECTIONS.DOWN ) {
-				  nextPos = {
-					  x: currentPos.x + 1,
-					  y: currentPos.y
-				  };
 				tempDirection = DIRECTIONS.DOWN;
-		        BoardFactory.move(tempDirection, currentPos);
 				PlayerFactory.setPlayerMoved(true);
 		      }
 		    });
@@ -81,6 +61,7 @@ angular.module('towerGameApp')
 				} else {
 					$scope.$apply();
 					if(10 === i){
+						BoardFactory.move(tempDirection, PlayerFactory.getPos())
 						BoardFactory.moveForward();
 						i = 0;
 					}
