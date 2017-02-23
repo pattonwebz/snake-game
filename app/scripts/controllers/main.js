@@ -73,11 +73,13 @@ angular.module('towerGameApp')
 			// run the start game function to reset board and start listener
 			startTheGame();
 			// set the inital moved state to false - game truly starts on first move
+			PlayerFactory.setPlayerMoved(false);
 			var moved = false;
 			// flag for when fruit is active in the board
 			var fruitOnBoard = false;
 			var i = 0;
 			// start our frames loop as an interval
+			clearInterval(t);
 			var t = setInterval(function () {
 				// check if player has moved yet
 				if (false === fruitOnBoard){
